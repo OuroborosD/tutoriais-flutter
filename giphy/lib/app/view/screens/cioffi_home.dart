@@ -20,6 +20,16 @@ class _Gif_homePageState extends State<Gif_homePage> {
   //   print(string);
   // }
 
+  void refresh()async{
+      gif.offset += 19;
+      // chama a função como ela é assincrona, tem que usar o await. 
+      //para só depois de terminar de carregar, passar para o setstate
+      await gif.get_Gif();
+      setState(() {
+        widget.createState();
+      });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -101,7 +111,7 @@ class _Gif_homePageState extends State<Gif_homePage> {
                     } else {
                       //print(snapshot.data);
                       //return  _createGrid(context,snapshot,);
-                      return Grid(gifs: snapshot.data,);
+                      return Grid(gifs: snapshot.data, fun: (){ refresh();},);
                     }
                 }
               },
