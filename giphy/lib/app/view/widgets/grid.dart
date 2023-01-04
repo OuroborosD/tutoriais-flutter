@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:giphy/app/controller/http_controller.dart';
+import 'package:giphy/app/view/screens/gif.dart';
 
 class Grid extends StatelessWidget {
   Grid({super.key, this.gifs, this.fun});
-  List<String>? gifs;
+  List<Map>? gifs;
   final VoidCallback? fun;
 
 
@@ -28,16 +31,25 @@ class Grid extends StatelessWidget {
           ),
 
           //EXPLANATION: explicação de como colocar o botão mais no ultimo item
-          // verifica o tamanho da lista, par é que não é pesquisa,
-          //impar é pesquisa e é para sobrar espaço para o widget de carregar mais        ===
+          // verificando  o tamanho da lista, quando retorna par, quer dizer que veio completa e não é para pesquisar,
+          //impar é pesquisar, e é  para sobrar espaço para o widget de carregar mais        ===
           itemCount: gifs!.length % 2 == 0? gifs!.length : search(gifs!.length), //   <=====||
           itemBuilder: (context, index) {
             if (is_search == false || index < gifs!.length) {
-              print("$index  tamanho total ${gifs!.length}");
-              return Image.network(gifs![index],
-                  height: 200, fit: BoxFit.cover);
+              //print("$index  tamanho total ${gifs!.length}");
+              print('no grid ====${gifs![index].values}');
+              return GestureDetector(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Gif(url:gifs![index]),));
+                },
+                //EXPLANATION :  Resolvendo Erro de String vindo como tuplas ()
+                //quando você pega o valoor pelo metodo values. a string vem com parenteses, oque da erro na ora de puxar a imagem
+                //oque faz com que tenhamos que tranformar uma uma lista, que modifica os parenteses() por colchetes [], ai é só colocar o index
+                child: Image.network(gifs![index].values.toList()[0],
+                    height: 200, fit: BoxFit.cover),
+              );
             } else {
-              print("se entou aqui é para aparecer o botão mais");
+              //print("se entou aqui é para aparecer o botão mais");
               return GestureDetector(
                 onTap: () {
                   fun!();

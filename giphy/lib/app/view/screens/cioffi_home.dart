@@ -79,7 +79,7 @@ class _Gif_homePageState extends State<Gif_homePage> {
                   },
                   ),
             ),
-            FutureBuilder<List<String>>(
+            FutureBuilder<List<Map>>(
               // o tipo, é do tipo de retorno da função que tem como parame-tro
               future: gif.get_Gif(), // get_finance return a Map, então future-Builder é um map
               builder: (context, snapshot) {
@@ -106,12 +106,14 @@ class _Gif_homePageState extends State<Gif_homePage> {
                     if (snapshot.hasError) {
                       // case de algum erro ao carregar a
                       return const  Center(
-                        child: Icon(Icons.error),
+                        child: Icon(Icons.error, color: Colors.white,size: 60,),
                       );
                     } else {
-                      //print(snapshot.data);
+                      List<Map> data = snapshot.data as List<Map>;
+                      print('estou aqui');
+                      print(data);
                       //return  _createGrid(context,snapshot,);
-                      return Grid(gifs: snapshot.data, fun: (){ refresh();},);
+                      return Grid(gifs: data, fun: (){ refresh();},);
                     }
                 }
               },

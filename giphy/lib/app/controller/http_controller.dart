@@ -7,12 +7,12 @@ class GifController {
   int offset;
 
   Map<String, dynamic>? body;
-  List<String> lista_imagens = [];
+  List<Map> lista_imagens = [];
 
-  Future<List<String>> get_Gif([int? offset, String? search]) async {
+  Future<List<Map>> get_Gif([int? offset, String? search]) async {
     Uri? request;
     lista_imagens = []; // lembrar de apagar a lista, para só mostrar oque pesqisou e não ficar com resultados antigos
-    print(' é para ter apagado o tamanho da lista ${lista_imagens.length}');
+    //print(' é para ter apagado o tamanho da lista ${lista_imagens.length}');
     if (this.search == null || this.search!.isEmpty) {
       request = Uri.parse(
           'https://api.giphy.com/v1/gifs/trending?api_key=xX2ZYCWebdiWuESJQQ6wOjB5JxkSZrLG&limit=20&rating=r');
@@ -25,8 +25,12 @@ class GifController {
     http.Response response = await http.get(request);
     body = json.decode(response.body);
     for (Map m in body!['data']) {
-      lista_imagens.add(m['images']["fixed_height"]['url']);
+      Map<String,String> holder = Map();
+      holder[m['title']] = m['images']["fixed_height"]['url'];
+      //print(holder);
+      lista_imagens.add(holder);
     }
+    //print(lista_imagens);
 
     return lista_imagens;
   }
