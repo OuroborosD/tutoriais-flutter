@@ -110,8 +110,7 @@ class _Gif_homePageState extends State<Gif_homePage> {
                       );
                     } else {
                       List<Map> data = snapshot.data as List<Map>;
-                      print('estou aqui');
-                      print(data);
+                    
                       //return  _createGrid(context,snapshot,);
                       return Grid(gifs: data, fun: (){ refresh();},);
                     }

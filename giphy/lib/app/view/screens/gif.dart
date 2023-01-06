@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 
+import 'package:giphy/app/controller/share_controller.dart';
+
+
+
 
 class Gif extends StatelessWidget {
   Gif({super.key, this.url});
@@ -11,6 +15,13 @@ class Gif extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Text(url!.keys.toList()[0]),
+        actions: [
+          IconButton(onPressed: ()async{
+            // função para compartilhar
+            await share(url!);
+          },
+           icon: const Icon(Icons.share))
+        ],
       ),
       backgroundColor: Colors.black,
       body: Container(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:giphy/app/view/screens/cioffi_home.dart';
-import 'package:giphy/app/view/screens/home.dart';
+
 
 void main() {
   runApp(const MyApp());
@@ -31,3 +31,4 @@ class MyApp extends StatelessWidget {
   }
 }
 
+  

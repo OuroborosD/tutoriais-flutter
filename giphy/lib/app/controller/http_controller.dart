@@ -25,7 +25,7 @@ class GifController {
     http.Response response = await http.get(request);
     body = json.decode(response.body);
     for (Map m in body!['data']) {
-      Map<String,String> holder = Map();
+      Map<String,String> holder = {};
       holder[m['title']] = m['images']["fixed_height"]['url'];
       //print(holder);
       lista_imagens.add(holder);
