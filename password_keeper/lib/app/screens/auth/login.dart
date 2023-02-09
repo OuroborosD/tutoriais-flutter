@@ -29,7 +29,6 @@ class Login extends StatelessWidget {
       // ),
       backgroundColor: Color.fromARGB(255, 224, 58, 63),
       body: Column(
-        //mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           //EXPLANATION escrever como fazera tela de login
           const Header(),

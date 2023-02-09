@@ -64,23 +64,26 @@ class DbHelper {
   Future<int> update(dynamic bank) async {
     Database dbTodo = await db;
     return await dbTodo
-        .update(table, bank.toMap(), where: 'id = ?', whereArgs: [bank.id]);
+        .update(table, bank.toMap(), // o toMap iria dar erro, se fosse objeto
+            where: 'id = ?',
+            whereArgs: [bank.id]);
   }
 
   Future<bool> getUser(String? login) async {
     bool? empty;
     Database dbTodo = await db;
     List<Object> lista = [];
-    List listMap =
-        await dbTodo.rawQuery("SELECT login FROM $table WHERE login = $login");
-    print(listMap);
-    if (listMap.isEmpty) {
-      print('entoru no vazio');
+    List listMap = await dbTodo
+        .rawQuery("SELECT login FROM $table WHERE login = '${login}';");
 
-      empty = false;
-    } else {
-      print('entoru no cheio');
+    if (listMap.isEmpty) {
+      print('não tem dados');
+      print(listMap);
       empty = true;
+    } else {
+      print('tem dados');
+      print(listMap);
+      empty = false;
     }
     return empty;
   }

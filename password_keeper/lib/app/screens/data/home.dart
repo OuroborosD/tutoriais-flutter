@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class DashBoard extends StatefulWidget {
+  const DashBoard({super.key});
 
   @override
-  State<HomePage> createState() => _HomeState();
+  State<DashBoard> createState() => _DashBoard();
 }
 
-class _HomeState extends State<HomePage> {
+class _DashBoard extends State<DashBoard> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -20,3 +20,4 @@ class _HomeState extends State<HomePage> {
     );
   }
 }
+

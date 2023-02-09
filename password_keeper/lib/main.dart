@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:password_keeper/app/screens/auth/create.dart';
 
 
 import 'package:password_keeper/app/screens/auth/login.dart';
 import 'package:password_keeper/app/screens/data/home.dart';
 
 
-void main () => {runApp(App())};
+void main () => runApp(App());
 
 
 
@@ -16,7 +17,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Login(),
+      home: Create(),
     );
   }
 }

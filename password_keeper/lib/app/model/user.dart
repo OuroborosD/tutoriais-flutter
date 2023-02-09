@@ -6,7 +6,7 @@ class User {
 
   User.fromMap(Map map) {
     id = map['id'];
-    login = map['value'];
+    login = map['login'];
     password = map['password'];
   }
   Map<String, dynamic> toMap() {
