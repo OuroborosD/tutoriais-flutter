@@ -1,8 +1,11 @@
 import 'package:password_keeper/app/controller/auth.dart';
+import 'package:password_keeper/app/model/password.dart';
+import 'package:password_keeper/app/model/user.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-final String table = 'Account'; // para auxiliar criamos uma variá-vel
+final String table = 'user'; // para auxiliar criamos uma variá-vel
+final String table2 = 'password';
 
 class DbHelper {
   static final DbHelper _instance = DbHelper.internal(); // não precisa
@@ -29,13 +32,24 @@ class DbHelper {
     return openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
       await db.execute("""CREATE TABLE $table(
-    id INTEGER PRIMARY KEY, name TEXT, acount INTEGER
+              id INTEGER PRIMARY KEY, 
+              login TEXT, 
+              password INTEGER
     )
     """);
+      await db.execute("""
+              CREATE TABLE $table2(
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                place text NOT NULL,
+                url TEXT DEFAULT "N/A",
+                password TEXT NOT NULL,
+                fk_user INTEGER NOT NULL,
+                FOREIGN KEY (fk_user) REFERENCES $table(id) ON DELETE CASCADE
+            );""");
     });
   }
 
-  Future<Account> insert(Account bank) async {
+  Future<dynamic> insert(dynamic bank) async {
     Database dbTodo = await db;
     bank.id = await dbTodo.insert(table, bank.toMap());
     return bank;
@@ -47,22 +61,52 @@ class DbHelper {
     return await dbTodo.delete(table, where: 'id = ?', whereArgs: [id]);
   }
 
-  Future<int> update(Account bank) async {
+  Future<int> update(dynamic bank) async {
     Database dbTodo = await db;
     return await dbTodo
         .update(table, bank.toMap(), where: 'id = ?', whereArgs: [bank.id]);
   }
 
-  Future<List> getAll() async {
+  Future<bool> getUser(String? login) async {
+    bool? empty;
     Database dbTodo = await db;
-    List listMap = await dbTodo.rawQuery("SELECT * FROM $table;");
-    List<Account> listTodo = [];
-    for (Map m in listMap) {
-      // convert LIST<MAP> in MAP
-      listTodo.add(Account.fromMap(m)); //pick MAP, and convert them to
+    List<Object> lista = [];
+    List listMap =
+        await dbTodo.rawQuery("SELECT login FROM $table WHERE login = $login");
+    print(listMap);
+    if (listMap.isEmpty) {
+      print('entoru no vazio');
 
+      empty = false;
+    } else {
+      print('entoru no cheio');
+      empty = true;
     }
-    return listTodo;
+    return empty;
+  }
+
+  Future<List> getAll(Object generic_class) async {
+    Database dbTodo = await db;
+    List<Object> lista = [];
+    List listMap = await dbTodo.rawQuery("SELECT * FROM $table;");
+    if (generic_class.runtimeType == User) {
+      List listMap = await dbTodo.rawQuery(
+          "SELECT * FROM $table;"); // pega todas as tables, retornadas em MAP
+      for (Map m in listMap) {
+        //pega a lista, separa  cada item
+        // e joga dentro da função fromMap
+        // que tranforma o MAP em Objeto User
+        print('lista $m');
+        lista.add(User.fromMap(m));
+      }
+    } else {
+      List listMap = await dbTodo.rawQuery("SELECT * FROM $table2;");
+      for (Map m in listMap) {
+        print('lista $m');
+        lista.add(Password.fromMap(m));
+      }
+    }
+    return lista;
   }
 
   Future<int?> getSize() async {

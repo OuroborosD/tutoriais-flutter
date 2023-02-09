@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:password_keeper/app/controller/auth.dart';
 
 import 'package:password_keeper/app/screens/auth/login.dart';
 import 'package:password_keeper/app/screens/widget/header.dart';
@@ -62,6 +63,9 @@ class Create extends StatelessWidget {
                             if (value!.isEmpty) {
                               return 'insira o usuario!';
                             }
+                            if(value.length < 2 ){
+                              return 'usuário precisa ter pelo menos 2 digitos';
+                            }
                           },
                         ),
                         const SizedBox(
@@ -72,6 +76,8 @@ class Create extends StatelessWidget {
                           style: TextStyle(
                             color: Color.fromARGB(255, 224, 58, 63),
                           ),
+                          keyboardType: TextInputType.number,
+                          obscureText: true,
                           decoration: const InputDecoration(
                             label: Text(
                               'Senha',
@@ -92,6 +98,9 @@ class Create extends StatelessWidget {
                             if (value!.isEmpty) {
                               return 'senha não pode estar vazia!';
                             }
+                            if(value.length < 4 ){
+                              return 'senha precisa ter pelo menos 4 digitos';
+                            }
                           },
                         ),
                         const SizedBox(
@@ -102,11 +111,13 @@ class Create extends StatelessWidget {
                           style: TextStyle(
                             color: Color.fromARGB(255, 224, 58, 63),
                           ),
+                          keyboardType: TextInputType.number,
+                          obscureText: true,
                           decoration: const InputDecoration(
-                            label: Text(
-                              'Confirme  a Senha',
-                              style: TextStyle(color: Color.fromARGB(255, 224, 58, 63),)
-                            ),
+                            label: Text('Confirme  a Senha',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 224, 58, 63),
+                                )),
                             enabledBorder: UnderlineInputBorder(
                                 // underline border
                                 borderSide: BorderSide(
@@ -134,16 +145,21 @@ class Create extends StatelessWidget {
                         ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              print('hello word');
+                              print('entoru ----');
+                              CreateController c1 = CreateController(
+                                  'login', int.parse(password1.text));
+                              c1.create();
+                            } else {
+                              print('nada');
                             }
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
-                              side: BorderSide(
+                              side: const BorderSide(
                                 width: 1,
                                 color: Color.fromARGB(255, 224, 58, 63),
                               )),
-                          child: SizedBox(
+                          child: const SizedBox(
                             width: double.infinity,
                             child: Align(
                               alignment: Alignment.center,

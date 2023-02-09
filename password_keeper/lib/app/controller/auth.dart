@@ -1,32 +1,40 @@
-class Account {
-  Account({this.user, this.password, this.id});
-  int? id;
-  String? user;
-  String? password;
 
-  Account.fromMap(Map map) {
-    id = map['id'];
-    user = map['value'];
-    password = map['password'];
-   
-  }
-  Map<String, dynamic> toMap() {
-    // transforma o objeto em mapa
-    Map<String, dynamic> map = {
-      'user': user,
+import 'package:password_keeper/utils/DB.dart';
 
-      'password': password,
+import '../model/user.dart';
 
-    };
-    if (id != null) {
-      
-      map['id'] = id;
+class LoginController{
+
+
+}
+
+
+
+class CreateController{
+  CreateController(this.login,this.password);
+    String? login;
+    int? password;
+
+  User user = User();
+  DbHelper db = DbHelper();
+
+ void create(){
+  user.login = this.login;
+  user.password = this.password;
+  db.getUser(user.login).then((value){
+    if (value){
+      print('usuario já cadastrado no sistema');
+    }else{
+      db.insert(user).then((value){
+        db.getAll(user).then((value){
+          print(value);
+        });
+      });
     }
-    return map;
-  }
+  });
 
-  @override
-  String toString() {
-    return 'id: $id, user: $user, password: $password';
-  }
+
+
+ }
+
 }
