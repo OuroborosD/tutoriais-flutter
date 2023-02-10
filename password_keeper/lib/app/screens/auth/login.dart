@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:password_keeper/app/controller/auth.dart';
 
 import 'package:password_keeper/app/screens/auth/create.dart';
+import 'package:password_keeper/app/screens/data/home.dart';
 import 'package:password_keeper/app/screens/widget/header.dart';
 
 class Login extends StatelessWidget {
@@ -11,6 +13,8 @@ class Login extends StatelessWidget {
     GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     TextEditingController login = TextEditingController();
     TextEditingController password = TextEditingController();
+    login.text = 'az';
+    password.text = '1234';
 
     return Scaffold(
       // floatingActionButton: FloatingActionButton(
@@ -119,7 +123,9 @@ class Login extends StatelessWidget {
                             }
                           },
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(
+                          height: 10,
+                        ),
                         GestureDetector(
                             onTap: () {
                               print('apertou');
@@ -140,7 +146,16 @@ class Login extends StatelessWidget {
                         ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                              print('hello word');
+                              LoginController l1 = LoginController(
+                                  int.parse(password.text), login.text);
+                              l1.login().then((value){
+                                if(value['login']){
+                                  Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) => DashBoard()));
+                                }else{
+                                  popUpInfoLogin(context,value);
+                                }
+                              });
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -173,8 +188,11 @@ class Login extends StatelessWidget {
                             GestureDetector(
                                 onTap: () {
                                   print('ir para o create page');
-                                  Navigator.push(context, 
-                                      MaterialPageRoute(builder: (context) => const Create()));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const Create()));
                                 },
                                 child: const Align(
                                   alignment: Alignment.bottomRight,
@@ -199,4 +217,28 @@ class Login extends StatelessWidget {
       ),
     );
   }
+}
+
+
+
+void popUpInfoLogin(BuildContext context, Map response) {
+  showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            alignment: Alignment.center,
+            icon:  const Icon(
+                    Icons.error_outline,
+                    size: 40,
+                    color: Colors.red,
+                  ),
+            content:  Text(response['response']),
+            actions: [
+              TextButton(
+                  // botão
+                  child: const Text('Ok'),
+                  onPressed: () {
+                   Navigator.pop(context);
+                  }),
+            ],
+          ));
 }

@@ -69,25 +69,6 @@ class DbHelper {
             whereArgs: [bank.id]);
   }
 
-  Future<bool> getUser(String? login) async {
-    bool? empty;
-    Database dbTodo = await db;
-    List<Object> lista = [];
-    List listMap = await dbTodo
-        .rawQuery("SELECT login FROM $table WHERE login = '${login}';");
-
-    if (listMap.isEmpty) {
-      print('não tem dados');
-      print(listMap);
-      empty = true;
-    } else {
-      print('tem dados');
-      print(listMap);
-      empty = false;
-    }
-    return empty;
-  }
-
   Future<List> getAll(Object generic_class) async {
     Database dbTodo = await db;
     List<Object> lista = [];
@@ -127,4 +108,34 @@ class DbHelper {
     Database dbTodo = await db;
     dbTodo.close();
   }
+
+//-----------------------------single 
+ Future<bool> userExist(String? login) async {
+    bool? exist;
+    Database dbKeeper = await db;
+    List<Object> lista = [];
+    List listMap = await dbKeeper
+        .rawQuery("SELECT login FROM $table WHERE login = '${login}';");
+
+    if (listMap.isEmpty) {
+      print('usuario não enctrontado no banco');
+      print(listMap);
+      exist = false;
+    } else {
+      print('usuario encontado no banco');
+      print(listMap);
+      exist = true;
+    }
+    return exist;
+  }
+
+
+Future<User> loginUser(User user) async{
+  Database dbKeeper = await db;
+  List list =  await dbKeeper.rawQuery("SELECT * FROM user WHERE login = '${user.login}' AND password = ${user.password};");
+  print('linha 136-------arquivo: DB.dart------- valor:$list');
+  return User.fromMap(list[0]);
+}
+
+
 }
