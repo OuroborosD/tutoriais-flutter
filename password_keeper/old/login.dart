@@ -5,7 +5,6 @@ import 'package:password_keeper/app/screens/auth/create.dart';
 import 'package:password_keeper/app/screens/data/home.dart';
 import 'package:password_keeper/app/screens/widget/header.dart';
 
-import '../widget/costum_input.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -57,30 +56,80 @@ class Login extends StatelessWidget {
                         const SizedBox(
                           height: 30,
                         ),
-                         CustomInput(
+                        TextFormField(
                           controller: login,
-                          label_text: 'usuário',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 224, 58, 63),
+                          ),
+                          decoration: const InputDecoration(
+                              prefixIcon: Icon(
+                                Icons.person,
+                                color: Color.fromARGB(255, 224, 58, 63),
+                              ),
+                              label: Text(
+                                'Usuario',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 224, 58, 63),
+                                ),
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Color.fromARGB(255, 224, 58, 63))),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Color.fromARGB(255, 224, 58, 63),
+                                      width: 3))),
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'usuario não pode estar vazia!';
+                              return 'insira o usuario!';
                             }
                           },
                         ),
                         const SizedBox(
                           height: 16,
                         ),
-                        CustomInput(
+                     
+                        TextFormField(
                           controller: password,
-                          label_text: 'senha',
-                          is_password: true,
-                          type: TextInputType.number,
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 224, 58, 63),
+                          ),
+                          keyboardType: TextInputType.number,
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                            prefixIcon: Icon(Icons.lock),
+                            label: Text(
+                              'Senha',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 224, 58, 63),
+                              ),
+                            ),
+
+                            //border: OutlineInputBorder(),
+                            // enabledBorder: OutlineInputBorder(
+                            //   borderSide: BorderSide(
+                            //       color: Color.fromARGB(255, 224, 58, 63),
+                            //       width: 2),
+                            // ),
+                            // focusedBorder: OutlineInputBorder(
+                            //     borderSide: BorderSide(
+                            //         color: Color.fromARGB(255, 224, 58, 63),
+                            //         width: 4)),
+                            enabledBorder: UnderlineInputBorder(
+                                // underline border
+                                borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 224, 58, 63))),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 224, 58, 63),
+                                    width: 3)),
+                          ),
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'senha não pode estar vazia!';
                             }
                           },
                         ),
-                        
                         SizedBox(
                           height: 10,
                         ),

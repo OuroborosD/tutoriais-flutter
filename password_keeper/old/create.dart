@@ -4,8 +4,6 @@ import 'package:password_keeper/app/controller/auth.dart';
 import 'package:password_keeper/app/screens/auth/login.dart';
 import 'package:password_keeper/app/screens/widget/header.dart';
 
-import '../widget/costum_input.dart';
-
 class Create extends StatelessWidget {
   const Create({super.key});
 
@@ -44,9 +42,28 @@ class Create extends StatelessWidget {
                         const SizedBox(
                           height: 30,
                         ),
-                        CustomInput(
+                        TextFormField(
                           controller: login,
-                          label_text: 'usuário',
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 224, 58, 63),
+                          ),
+                          decoration: const InputDecoration(
+                            prefixIcon: Icon(Icons.person),
+                            label: Text(
+                              'Usuario',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 224, 58, 63),
+                              ),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                                // underline border
+                                borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 224, 58, 63))),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 224, 58, 63),
+                                    width: 3)),
+                          ),
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'insira o usuario!';
@@ -67,11 +84,30 @@ class Create extends StatelessWidget {
                         const SizedBox(
                           height: 16,
                         ),
-                        CustomInput(
+                        TextFormField(
                           controller: password1,
-                          label_text: 'senha',
-                          is_password: true,
-                          type: TextInputType.number,
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 224, 58, 63),
+                          ),
+                          keyboardType: TextInputType.number,
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                            prefixIcon: Icon(Icons.lock),
+                            label: Text(
+                              'Senha',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 224, 58, 63),
+                              ),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                                // underline border
+                                borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 224, 58, 63))),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 224, 58, 63),
+                                    width: 3)),
+                          ),
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'senha não pode estar vazia!';
@@ -85,11 +121,30 @@ class Create extends StatelessWidget {
                         const SizedBox(
                           height: 16,
                         ),
-                        CustomInput(
+                        
+
+                        TextFormField(
                           controller: password2,
-                          label_text: 'senha',
-                          is_password: true,
-                          type: TextInputType.number,
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 224, 58, 63),
+                          ),
+                          keyboardType: TextInputType.number,
+                          obscureText: true,
+                          decoration: const InputDecoration(
+                            prefixIcon: Icon(Icons.lock),
+                            label: Text('Confirme  a Senha',
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 224, 58, 63),
+                                )),
+                            enabledBorder: UnderlineInputBorder(
+                                // underline border
+                                borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 224, 58, 63))),
+                            focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Color.fromARGB(255, 224, 58, 63),
+                                    width: 3)),
+                          ),
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'senha não pode estar vazia!';
@@ -97,8 +152,9 @@ class Create extends StatelessWidget {
                             if (password1.text != value) {
                               return 'senhas precisam ser iguais';
                             }
-                            return null;
-                          },
+                             return null;
+                          }
+                         
                         ),
                         const SizedBox(
                           height: 26,
@@ -109,9 +165,10 @@ class Create extends StatelessWidget {
                               CreateController c1 = CreateController(
                                   login.text, int.parse(password1.text));
                               c1.create().then((value) {
+                               
                                 popUpInfoCreate(context, c1.login, value);
                               });
-                            }
+                            } 
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
@@ -142,6 +199,7 @@ class Create extends StatelessWidget {
                             const Text('Já tem Conta?  '),
                             GestureDetector(
                                 onTap: () {
+
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
@@ -189,16 +247,16 @@ void popUpInfoCreate(BuildContext context, String? user, bool status) {
                     color: Colors.red,
                   ),
             content: status
-                ? Text('usuario $user Foi Criado no Sistema')
-                : Text('Usuario $user Já Existe no Banco de Dados'),
+                ? Text('usuario $user Foi Criado')
+                : Text('Usuario $user Já Existe'),
             actions: [
               TextButton(
                   // botão
-                  child: const Text('Ok', style: TextStyle(color: Color.fromARGB(198, 224, 58, 64),),),
+                  child: const Text('Ok'),
                   onPressed: () {
                     status
                         ? Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => const Login()))
+                            MaterialPageRoute(builder: (context) => Login()))
                         : Navigator.pop(context);
                   }),
             ],
@@ -210,8 +268,8 @@ void snackUserCreateIfo(BuildContext context, String? user, bool status) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
     duration: Duration(seconds: 6),
     content: status
-        ? Text('usuario | $user | Foi criando')
-        : Text('usuario | $user | já existe'),
+        ? Text('usuario ${user} Foi criando')
+        : Text('usuario ${user} já existe'),
     action: SnackBarAction(
         // botão
         label: 'OK',
@@ -223,3 +281,4 @@ void snackUserCreateIfo(BuildContext context, String? user, bool status) {
         }),
   ));
 }
+
