@@ -16,16 +16,17 @@ class LoginController {
     try {
       await db.loginUser(user).then((value){
         response['login'] = true;
+        response['user'] = value;
+        
       });
     }catch(e){
-      print(e);
-      print('usuario não existe');
+
       if(await db.userExist(username)){
           response['response'] = 'senha incorreta';
-          print('senha incorreta');
+
       }else{
         response['response'] = 'usuario incorreto';
-        print('usuario incorreto');
+
       }
     }
 
@@ -51,7 +52,10 @@ class CreateController {
     await db.userExist(user.login).then((value) async {
       if (!value) {
         createdUser = true;
-        db.insert(user).then((value) {});
+        db.insert(user).then((value) {
+          db.getAll1();
+        });
+
       } else {}
     });
 

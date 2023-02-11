@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:password_keeper/app/controller/auth.dart';
 
 import 'package:password_keeper/app/screens/auth/create.dart';
-import 'package:password_keeper/app/screens/data/home.dart';
+import 'package:password_keeper/app/screens/data/dashboard.dart';
 import 'package:password_keeper/app/screens/widget/header.dart';
 
-import '../widget/costum_input.dart';
+import '../widget/custom_input.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -33,10 +33,10 @@ class Login extends StatelessWidget {
       //   ),
       //   backgroundColor: Colors.white,
       // ),
-      backgroundColor: Color.fromARGB(255, 224, 58, 63),
+      backgroundColor: const  Color.fromARGB(255, 224, 58, 63),
       body: Column(
         children: [
-          //EXPLANATION escrever como fazera tela de login
+          //FINISHED escrever como fazera tela de login
           const Header(),
           Expanded(
             child: Container(
@@ -49,7 +49,7 @@ class Login extends StatelessWidget {
                 child: Form(
                   key: _formKey,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 40),
+                    padding: const EdgeInsets.symmetric(horizontal: 40),
                     //color: Color.fromARGB(255, 224, 58, 63),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,6 +64,7 @@ class Login extends StatelessWidget {
                             if (value!.isEmpty) {
                               return 'usuario não pode estar vazia!';
                             }
+                            return null;
                           },
                         ),
                         const SizedBox(
@@ -78,15 +79,16 @@ class Login extends StatelessWidget {
                             if (value!.isEmpty) {
                               return 'senha não pode estar vazia!';
                             }
+                            return null;
                           },
                         ),
                         
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         GestureDetector(
                             onTap: () {
-                              print('apertou');
+                            
                             },
                             child: const Align(
                               alignment: Alignment.bottomRight,
@@ -111,7 +113,7 @@ class Login extends StatelessWidget {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => DashBoard()));
+                                          builder: (context) => DashBoard(user: value['user'])));
                                 } else {
                                   popUpInfoLogin(context, value);
                                 }

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:password_keeper/app/controller/auth.dart';
 
 import 'package:password_keeper/app/screens/auth/create.dart';
-import 'package:password_keeper/app/screens/data/home.dart';
+import 'package:password_keeper/app/screens/data/dashboard.dart';
 import 'package:password_keeper/app/screens/widget/header.dart';
-
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -58,7 +57,7 @@ class Login extends StatelessWidget {
                         ),
                         TextFormField(
                           controller: login,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Color.fromARGB(255, 224, 58, 63),
                           ),
                           decoration: const InputDecoration(
@@ -88,10 +87,9 @@ class Login extends StatelessWidget {
                         const SizedBox(
                           height: 16,
                         ),
-                     
                         TextFormField(
                           controller: password,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Color.fromARGB(255, 224, 58, 63),
                           ),
                           keyboardType: TextInputType.number,
@@ -130,13 +128,11 @@ class Login extends StatelessWidget {
                             }
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         GestureDetector(
-                            onTap: () {
-                              print('apertou');
-                            },
+                            onTap: () {},
                             child: const Align(
                               alignment: Alignment.bottomRight,
                               child: Text(
@@ -160,7 +156,8 @@ class Login extends StatelessWidget {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => DashBoard()));
+                                          builder: (context) =>
+                                               DashBoard()));
                                 } else {
                                   popUpInfoLogin(context, value);
                                 }
@@ -169,11 +166,11 @@ class Login extends StatelessWidget {
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
-                              side: BorderSide(
+                              side: const BorderSide(
                                 width: 1,
                                 color: Color.fromARGB(255, 224, 58, 63),
                               )),
-                          child: SizedBox(
+                          child: const SizedBox(
                             width: double.infinity,
                             child: Align(
                               alignment: Alignment.center,
@@ -196,7 +193,6 @@ class Login extends StatelessWidget {
                             Text('Não tem uma conta ?  '),
                             GestureDetector(
                                 onTap: () {
-                                  print('ir para o create page');
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(

@@ -28,7 +28,7 @@ class DbHelper {
     // cria o banco de dados
     final databasePath = await getDatabasesPath(); // pega o caminho onde
 
-    final path = join(databasePath, 'alura_bank.db');
+    final path = join(databasePath, 'password.db');
     return openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
       await db.execute("""CREATE TABLE $table(
@@ -42,6 +42,7 @@ class DbHelper {
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 place text NOT NULL,
                 url TEXT DEFAULT "N/A",
+                login TEXT NOT NULL,
                 password TEXT NOT NULL,
                 fk_user INTEGER NOT NULL,
                 FOREIGN KEY (fk_user) REFERENCES $table(id) ON DELETE CASCADE
@@ -69,26 +70,27 @@ class DbHelper {
             whereArgs: [bank.id]);
   }
 
-  Future<List> getAll(Object generic_class) async {
+  Future<List> getAll1() async {
     Database dbTodo = await db;
-    List<Object> lista = [];
-    List listMap = await dbTodo.rawQuery("SELECT * FROM $table;");
-    if (generic_class.runtimeType == User) {
-      List listMap = await dbTodo.rawQuery(
-          "SELECT * FROM $table;"); // pega todas as tables, retornadas em MAP
-      for (Map m in listMap) {
-        //pega a lista, separa  cada item
-        // e joga dentro da função fromMap
-        // que tranforma o MAP em Objeto User
-        print('lista $m');
-        lista.add(User.fromMap(m));
-      }
-    } else {
-      List listMap = await dbTodo.rawQuery("SELECT * FROM $table2;");
-      for (Map m in listMap) {
-        print('lista $m');
-        lista.add(Password.fromMap(m));
-      }
+    List<User> lista = [];
+    List listMap = await dbTodo
+        .rawQuery("SELECT * FROM $table");
+    for (Map m in listMap) {
+      print('lista $m');
+      lista.add(User.fromMap(m));
+    }
+    print(lista);
+    return lista;
+  }
+
+  Future<List> getAll(dynamic generic_class) async {
+    Database dbTodo = await db;
+    List<Password> lista = [];
+    List listMap = await dbTodo
+        .rawQuery("SELECT * FROM $table2 WHERE fk_user = ${generic_class.id};");
+    for (Map m in listMap) {
+      print('lista $m');
+      lista.add(Password.fromMap(m));
     }
     return lista;
   }
@@ -109,8 +111,8 @@ class DbHelper {
     dbTodo.close();
   }
 
-//-----------------------------single 
- Future<bool> userExist(String? login) async {
+//-----------------------------single
+  Future<bool> userExist(String? login) async {
     bool? exist;
     Database dbKeeper = await db;
     List<Object> lista = [];
@@ -129,13 +131,17 @@ class DbHelper {
     return exist;
   }
 
+  Future<User> loginUser(User user) async {
+    Database dbKeeper = await db;
+    List list = await dbKeeper.rawQuery(
+        "SELECT * FROM user WHERE login = '${user.login}' AND password = ${user.password};");
+    print('linha 136-------arquivo: DB.dart------- valor:$list');
+    return User.fromMap(list[0]);
+  }
 
-Future<User> loginUser(User user) async{
-  Database dbKeeper = await db;
-  List list =  await dbKeeper.rawQuery("SELECT * FROM user WHERE login = '${user.login}' AND password = ${user.password};");
-  print('linha 136-------arquivo: DB.dart------- valor:$list');
-  return User.fromMap(list[0]);
-}
-
-
+  Future<dynamic> insertPassword(User user, Password password) async {
+    Database dbTodo = await db;
+    password.id = await dbTodo.insert(table, password.toMap());
+    return password;
+  }
 }

@@ -4,7 +4,7 @@ import 'package:password_keeper/app/controller/auth.dart';
 import 'package:password_keeper/app/screens/auth/login.dart';
 import 'package:password_keeper/app/screens/widget/header.dart';
 
-import '../widget/costum_input.dart';
+import '../widget/custom_input.dart';
 
 class Create extends StatelessWidget {
   const Create({super.key});
@@ -208,7 +208,7 @@ void popUpInfoCreate(BuildContext context, String? user, bool status) {
 void snackUserCreateIfo(BuildContext context, String? user, bool status) {
   ScaffoldMessenger.of(context).clearSnackBars();
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    duration: Duration(seconds: 6),
+    duration: const Duration(seconds: 6),
     content: status
         ? Text('usuario | $user | Foi criando')
         : Text('usuario | $user | já existe'),
@@ -218,7 +218,7 @@ void snackUserCreateIfo(BuildContext context, String? user, bool status) {
         onPressed: () {
           status
               ? Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Login()))
+                  context, MaterialPageRoute(builder: (context) => const Login()))
               : Navigator.pop(context);
         }),
   ));

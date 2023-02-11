@@ -3,7 +3,7 @@ import 'package:password_keeper/app/screens/auth/create.dart';
 
 
 import 'package:password_keeper/app/screens/auth/login.dart';
-import 'package:password_keeper/app/screens/data/home.dart';
+import 'package:password_keeper/app/screens/data/dashboard.dart';
 
 
 void main () => runApp(App());
@@ -17,6 +17,17 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+       textTheme: TextTheme(
+        bodyText1: TextStyle(
+          fontSize: 16,
+          color: Color.fromARGB(255, 224, 58, 63),
+        )
+       ),
+       primaryColor: Color.fromARGB(198, 224, 58, 64),
+
+        ),
+      
       home: Login(),
     );
   }
