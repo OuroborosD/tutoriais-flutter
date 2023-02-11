@@ -52,9 +52,14 @@ class DbHelper {
 
   Future<dynamic> insert(dynamic bank) async {
     Database dbTodo = await db;
-    bank.id = await dbTodo.insert(table, bank.toMap());
+    // pega o nome da classe que foi colocada. 
+    String nome_class = bank.runtimeType.toString();
+    print(nome_class);
+    bank.id = await dbTodo.insert( nome_class == 'User' ? table : table2, bank.toMap());
     return bank;
   }
+
+
 
   Future<int> delete(int id) async {
     // o delete retorna um numero inteiro

@@ -27,6 +27,7 @@ class AddPasword extends StatelessWidget {
           const Header(),
           Expanded(
             child: Container(
+              
               // esse bloco é para datar a borda curvada da imagem
               decoration: const BoxDecoration(
                   color: Colors.white,

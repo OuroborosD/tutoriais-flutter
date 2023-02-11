@@ -16,9 +16,9 @@ class Create extends StatelessWidget {
     TextEditingController password1 = TextEditingController();
     TextEditingController password2 = TextEditingController();
 
-    login.text = 'az';
-    password1.text = '1234';
-    password2.text = '1234';
+    // login.text = 'az';
+    // password1.text = '1234';
+    // password2.text = '1234';
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 224, 58, 63),

@@ -18,6 +18,10 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Color.fromARGB(255, 224, 58, 63),
+          
+        ),
        textTheme: TextTheme(
         bodyText1: TextStyle(
           fontSize: 16,
