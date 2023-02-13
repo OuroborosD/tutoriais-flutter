@@ -20,7 +20,7 @@ class CustomInput extends StatefulWidget {
 }
 
 class _CustomInputState extends State<CustomInput> {
-bool visible = false;
+bool obscure_text = true;
 
   @override
   Widget build(BuildContext context) {
@@ -30,16 +30,16 @@ bool visible = false;
         color: Color.fromARGB(255, 224, 58, 63),
       ),
       keyboardType: widget.type,
-      obscureText: widget.is_password! ? visible : false,
+      obscureText: widget.is_password! ? obscure_text : false,
       decoration: InputDecoration(
         suffix: widget.is_password!
             ? IconButton(
                 onPressed: () {
                   setState(() {
-                    visible = !visible;
+                    obscure_text = !obscure_text;
                   });
                 },
-                icon: Icon(!visible ? Icons.visibility : Icons.visibility_off),
+                icon: Icon(!obscure_text ? Icons.visibility : Icons.visibility_off),
                 color: Color.fromARGB(255, 224, 58, 63),
               )
             : null,
@@ -55,9 +55,10 @@ bool visible = false;
                 BorderSide(color: Color.fromARGB(255, 224, 58, 63), width: 3)),
       ),
       validator: widget.validator,
-      onTap: (){
-        widget.controller!.text = '';
-      },
+      
+      // onTap: (){
+      //   widget.controller!.text = '';
+      // },
     );
   }
 }

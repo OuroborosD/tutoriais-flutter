@@ -37,6 +37,18 @@ class DbHelper {
               password INTEGER
     )
     """);
+
+      //BOOK refazer a parte de chave estrangeira, no livro, pois não funciona o ON CASCEDE naquela forma
+      // await db.execute("""
+      //         CREATE TABLE $table2(
+      //           id INTEGER PRIMARY KEY AUTOINCREMENT,
+      //           place text NOT NULL,
+      //           url TEXT DEFAULT "N/A",
+      //           login TEXT NOT NULL,
+      //           password TEXT NOT NULL,
+      //           fk_user INTEGER NOT NULL,
+      //           FOREIGN KEY (fk_user) REFERENCES $table(id) ON DELETE CASCADE
+      //       );""");
       await db.execute("""
               CREATE TABLE $table2(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -45,21 +57,23 @@ class DbHelper {
                 login TEXT NOT NULL,
                 password TEXT NOT NULL,
                 fk_user INTEGER NOT NULL,
-                FOREIGN KEY (fk_user) REFERENCES $table(id) ON DELETE CASCADE
-            );""");
+                CONSTRAINT fk_constraint
+                  FOREIGN KEY (fk_user)
+                  REFERENCES $table(id)
+                  ON DELETE CASCADE)
+""");
     });
   }
 
   Future<dynamic> insert(dynamic bank) async {
     Database dbTodo = await db;
-    // pega o nome da classe que foi colocada. 
+    // pega o nome da classe que foi colocada.
     String nome_class = bank.runtimeType.toString();
     print(nome_class);
-    bank.id = await dbTodo.insert( nome_class == 'User' ? table : table2, bank.toMap());
+    bank.id = await dbTodo.insert(
+        nome_class == 'User' ? table : table2, bank.toMap());
     return bank;
   }
-
-
 
   Future<int> delete(int id) async {
     // o delete retorna um numero inteiro
@@ -67,10 +81,16 @@ class DbHelper {
     return await dbTodo.delete(table, where: 'id = ?', whereArgs: [id]);
   }
 
+    Future<int> deletepassword(int id) async {
+    // o delete retorna um numero inteiro
+    Database dbTodo = await db;
+    return await dbTodo.delete(table2, where: 'fk_user = ?', whereArgs: [id]);
+  }
+
   Future<int> update(dynamic bank) async {
     Database dbTodo = await db;
     return await dbTodo
-        .update(table, bank.toMap(), // o toMap iria dar erro, se fosse objeto
+        .update(table2, bank.toMap(), // o toMap iria dar erro, se fosse objeto
             where: 'id = ?',
             whereArgs: [bank.id]);
   }
@@ -78,8 +98,7 @@ class DbHelper {
   Future<List> getAll1() async {
     Database dbTodo = await db;
     List<User> lista = [];
-    List listMap = await dbTodo
-        .rawQuery("SELECT * FROM $table");
+    List listMap = await dbTodo.rawQuery("SELECT * FROM $table");
     for (Map m in listMap) {
       print('lista $m');
       lista.add(User.fromMap(m));
