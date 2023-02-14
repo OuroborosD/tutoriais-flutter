@@ -13,21 +13,21 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Color.fromARGB(255, 224, 58, 63),
         ),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: Color.fromARGB(255, 224, 58, 63),
         ),
-        inputDecorationTheme: InputDecorationTheme(
+        inputDecorationTheme: const  InputDecorationTheme(
           iconColor: Color.fromARGB(255, 224, 58, 63),
           enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Color.fromARGB(255, 224, 58, 63))),
-          focusedBorder: const UnderlineInputBorder(
-              borderSide: BorderSide(
+          focusedBorder:  UnderlineInputBorder(
+              borderSide:  BorderSide(
                   color: Color.fromARGB(255, 224, 58, 63), width: 3)),
         ),
-        textTheme: TextTheme(
+        textTheme: const TextTheme(
             bodyText1: TextStyle(
               fontSize: 16,
               color: Color.fromARGB(255, 224, 58, 63),
@@ -36,9 +36,9 @@ class App extends StatelessWidget {
               fontSize: 12,
               color: Color.fromARGB(255, 224, 58, 63),
             )),
-        primaryColor: Color.fromARGB(198, 224, 58, 64),
+        primaryColor:const Color.fromARGB(198, 224, 58, 64),
       ),
-      home: Login(),
+      home: const Login(),
     );
   }
 }

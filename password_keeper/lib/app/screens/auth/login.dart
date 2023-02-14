@@ -107,7 +107,7 @@ class Login extends StatelessWidget {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               LoginController l1 = LoginController(
-                                  int.parse(password.text), login.text);
+                                  int.parse(password.text.trim()), login.text.trim());
                               l1.login().then((value) {
                                 if (value['login']) {
                                   Navigator.push(

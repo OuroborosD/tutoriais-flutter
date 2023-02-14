@@ -63,7 +63,7 @@ class _DashBoard extends State<DashBoard> {
                     context,
                     MaterialPageRoute(
                         //BOOK como chamr uma função de pois que saiu da pagina
-                        builder: (context) => AddPasword(user: widget.user)))
+                        builder: (context) => PasswordPage(user: widget.user)))
                 // o push é um futre então pode ser usado o then, quando ele retorna a pagina.
                 .then((value) {
               setState(() {

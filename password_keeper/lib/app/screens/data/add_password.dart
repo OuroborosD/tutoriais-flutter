@@ -98,10 +98,10 @@ class AddPasword extends StatelessWidget {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               Password p1 = Password(
-                                  place: place.text,
-                                  url: url.text,
-                                  login: login.text,
-                                  password: password.text,
+                                  place: place.text.trim(),
+                                  url: url.text.trim(),
+                                  login: login.text.trim(),
+                                  password: password.text.trim(),
                                   fk_user: user!.id);
                               print('	linha 107-------arquivo: add_password ------- valor:$p1	');
                               db.insert(p1);

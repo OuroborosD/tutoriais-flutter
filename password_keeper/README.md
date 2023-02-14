@@ -1,20 +1,19 @@
 # password_keeper
 
-A new Flutter project.
+to keep the accounts always a few clicks of distance.
 
-## Getting Started
+## features
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+#### Auth
+[X] - create user
+[X] - search for logins that already exist
+[X] - in case of error on the login, tell if is the user or password that is wrong
+[ ] - user is saved for 1h, 1 day, 1 mouth or a year 
 
 
+### Dashboard
+[X] - search the places
 
-TODO 
+
+### Password Page
+[ ] - put the clipboard to copy and paste.

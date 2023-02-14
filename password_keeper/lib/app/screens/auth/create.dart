@@ -107,7 +107,7 @@ class Create extends StatelessWidget {
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
                               CreateController c1 = CreateController(
-                                  login.text, int.parse(password1.text));
+                                  login.text.trim(), int.parse(password1.text.trim()));
                               c1.create().then((value) {
                                 popUpInfoCreate(context, c1.login, value);
                               });

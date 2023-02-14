@@ -7,13 +7,14 @@ class CustomInput extends StatefulWidget {
       this.type,
       required this.label_text,
       this.is_password = false,
-      
+
       required this.validator});
   TextEditingController? controller;
   TextInputType? type;
   String? Function(String?) validator;
   String? label_text;
   bool? is_password;
+
 
   @override
   State<CustomInput> createState() => _CustomInputState();
