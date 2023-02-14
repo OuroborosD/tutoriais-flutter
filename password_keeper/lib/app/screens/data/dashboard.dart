@@ -17,13 +17,39 @@ class DashBoard extends StatefulWidget {
 }
 
 class _DashBoard extends State<DashBoard> {
+  TextEditingController search = TextEditingController();
   DbHelper db = DbHelper();
   List<Password> list_password = [];
+  bool searching = false;
+  int flex_search = 4;
+  FocusNode focus = FocusNode();
 
   Future<Null> refresh() async {
     await Future.delayed(Duration(seconds: 1));
     setState(() {
       widget.createState();
+    });
+  }
+
+  void searchingDB() {
+    if (search.text.isEmpty || search.text == null) {
+      searching = false;
+    } else {
+      searching = true;
+    }
+    print(searching);
+    setState(() {
+      searching;
+      //widget.createState();
+    });
+  }
+
+  void initState() {
+    super.initState();
+    focus.addListener(() {
+      if (!focus.hasFocus) {
+        print('teste --------------teste');
+      }
     });
   }
 
@@ -132,20 +158,61 @@ class _DashBoard extends State<DashBoard> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(bottom: 10.0, left: 15, right: 15),
           child: Column(
             children: [
-              Expanded(
-                flex: 1,
-                child: Text('menus'),
+              Container(
+                color: Colors.white,
+                height: 8,
               ),
               Expanded(
-                  flex: 9,
+                flex: flex_search,
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  color: Colors.white,
+                  //BOOK como verificar se algo tem focado de forma simples
+                  // child: Focus(
+                  // onFocusChange: (focus) {
+                  //   if (focus) {
+                  //     setState(() {
+                  //       flex_search = 3;
+                  //       print(
+                  //           '	linha 165-------arquivo: ------- valor:$flex_search	');
+                  //     });
+                  //   } if(!focus) {
+                  //     setState(() {
+                  //       flex_search = 2;
+
+                  //       print(
+                  //           '	linha 175-------arquivo: ------- valor:$flex_search	');
+                  //     });
+                  //   }
+                  // },
+                  child: TextField(
+                    controller: search,
+                    onChanged: (value) {
+                      searchingDB(); //altera o estado cada vez que digita algo.
+                    },
+                    decoration: const InputDecoration(
+                        //label: Text('local'),
+                        hintText: "facebook..",
+                        suffixIcon: Icon(Icons.search)),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Expanded(
+                  flex: 22,
                   child: RefreshIndicator(
                     onRefresh: refresh,
                     //BOOK refazer codigo do future builder
                     child: FutureBuilder<List>(
-                      future: db.getAll(widget.user),
+                      //BOOK adicionar como fazer a pesquisa
+                      future: searching == true
+                          ? db.search(search.text, widget.user!.id!)
+                          : db.getAll(widget.user),
                       builder: ((context, snapshot) {
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
@@ -156,16 +223,31 @@ class _DashBoard extends State<DashBoard> {
                                 height: 200,
                                 alignment: Alignment.center,
                                 child: const CircularProgressIndicator(
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                      Colors.white),
+                                  valueColor:
+                                      AlwaysStoppedAnimation<Color>(Colors.red),
                                   strokeWidth: 5,
                                 ),
                               ),
                             );
+
                           default:
                             if (snapshot.hasError) {
                               return const Center(
                                 child: Icon(Icons.error),
+                              );
+                            }
+                            if (snapshot.data!.isEmpty ||
+                                snapshot.data == null) {
+                              return Center(
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 200,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'dados não encontrados',
+                                    style: TextStyle(fontSize: 22),
+                                  ),
+                                ),
                               );
                             } else {
                               list_password = snapshot.data as List<Password>;

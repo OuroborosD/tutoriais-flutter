@@ -81,7 +81,7 @@ class DbHelper {
     return await dbTodo.delete(table, where: 'id = ?', whereArgs: [id]);
   }
 
-    Future<int> deletepassword(int id) async {
+  Future<int> deletepassword(int id) async {
     // o delete retorna um numero inteiro
     Database dbTodo = await db;
     return await dbTodo.delete(table2, where: 'fk_user = ?', whereArgs: [id]);
@@ -161,6 +161,18 @@ class DbHelper {
         "SELECT * FROM user WHERE login = '${user.login}' AND password = ${user.password};");
     print('linha 136-------arquivo: DB.dart------- valor:$list');
     return User.fromMap(list[0]);
+  }
+
+  Future<List> search(String search, int fk) async {
+    Database dbKeeper = await db;
+    List<Password> list = [];
+    List listMap = await dbKeeper.rawQuery(
+        "SELECT * FROM $table2 WHERE place Like '$search%' and fk_user= $fk;");
+    for (Map m in listMap) {
+      list.add(Password.fromMap(m));
+    }
+    print('linha 174-------arquivo: DB.dart------- valor:$list');
+    return list;
   }
 
   Future<dynamic> insertPassword(User user, Password password) async {

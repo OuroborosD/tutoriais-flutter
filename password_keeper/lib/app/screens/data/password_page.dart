@@ -40,7 +40,7 @@ class PasswordPage extends StatelessWidget {
                 child: Form(
                   key: _formKey,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 40),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     //color: Color.fromARGB(255, 224, 58, 63),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

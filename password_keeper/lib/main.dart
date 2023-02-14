@@ -19,8 +19,15 @@ class App extends StatelessWidget {
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
           backgroundColor: Color.fromARGB(255, 224, 58, 63),
         ),
-        textTheme:  TextTheme(
-       
+        inputDecorationTheme: InputDecorationTheme(
+          iconColor: Color.fromARGB(255, 224, 58, 63),
+          enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Color.fromARGB(255, 224, 58, 63))),
+          focusedBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(
+                  color: Color.fromARGB(255, 224, 58, 63), width: 3)),
+        ),
+        textTheme: TextTheme(
             bodyText1: TextStyle(
               fontSize: 16,
               color: Color.fromARGB(255, 224, 58, 63),
