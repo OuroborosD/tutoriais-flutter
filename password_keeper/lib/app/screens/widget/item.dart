@@ -12,6 +12,7 @@ class ItemPassword extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(4),
       child: ListTile(
+       
         textColor: Colors.white,
         iconColor: Colors.white,
         contentPadding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
@@ -28,6 +29,7 @@ class ItemPassword extends StatelessWidget {
         ),
         subtitle: Text(p1!.url!,
             style: TextStyle(
+              overflow: TextOverflow.ellipsis,
                 fontSize: 12,
                 fontWeight: FontWeight.w100,
                 fontStyle: FontStyle.italic,

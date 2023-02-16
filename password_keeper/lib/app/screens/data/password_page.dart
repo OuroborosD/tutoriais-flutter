@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+
+import 'package:password_keeper/utils/DB.dart';
+
 import 'package:password_keeper/app/model/password.dart';
 import 'package:password_keeper/app/model/user.dart';
-import 'package:password_keeper/app/screens/widget/clipboard_input.dart';
 import 'package:password_keeper/app/screens/widget/custom_input.dart';
 import 'package:password_keeper/app/screens/widget/header.dart';
-import 'package:password_keeper/utils/DB.dart';
 
 class PasswordPage extends StatelessWidget {
   PasswordPage({super.key, this.acount, this.user});
@@ -18,17 +19,17 @@ class PasswordPage extends StatelessWidget {
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   DbHelper db = DbHelper();
 
-  
   @override
   Widget build(BuildContext context) {
-    url.text =  'N/A';
-      if (acount != null){
-    place.text = acount!.place!;
-    login.text = acount!.login!;
-    password.text = acount!.password!;
-    url.text = acount!.url!;
-  }
+    url.text = 'N/A';
 
+    //password.text = null;
+    if (acount != null) {
+      place.text = acount!.place!;
+      login.text = acount!.login!;
+      password.text = acount!.password!;
+      url.text = acount!.url!;
+    }
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 224, 58, 63),
@@ -37,7 +38,6 @@ class PasswordPage extends StatelessWidget {
           const Header(),
           Expanded(
             child: Container(
-              
               // esse bloco é para datar a borda curvada da imagem
               decoration: const BoxDecoration(
                   color: Colors.white,
@@ -55,10 +55,10 @@ class PasswordPage extends StatelessWidget {
                         const SizedBox(
                           height: 30,
                         ),
-                        ClipBoardInput(
+                        CustomInput(
+                            has_copy_paste: true,
                             label_text: 'Local',
                             controller: place,
-                            //has_copy_paste: true,
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'local não pode estar vazia!';
@@ -68,7 +68,8 @@ class PasswordPage extends StatelessWidget {
                         const SizedBox(
                           height: 16,
                         ),
-                        ClipBoardInput(
+                        CustomInput(
+                            has_copy_paste: true,
                             label_text: 'Url',
                             controller: url,
                             validator: (value) {
@@ -80,8 +81,9 @@ class PasswordPage extends StatelessWidget {
                         SizedBox(
                           height: 16,
                         ),
-                        ClipBoardInput(
-                            label_text: 'login',
+                        CustomInput(
+                            has_copy_paste: true,
+                            label_text: 'Login',
                             controller: login,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -92,7 +94,8 @@ class PasswordPage extends StatelessWidget {
                         SizedBox(
                           height: 16,
                         ),
-                        ClipBoardInput(
+                        CustomInput(
+                            has_copy_paste: true,
                             label_text: 'Senha',
                             controller: password,
                             is_password: true,
@@ -108,16 +111,19 @@ class PasswordPage extends StatelessWidget {
                         ElevatedButton(
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
-                             // verifica caso tenha mandado como parametro user ou password
+                              // verifica caso tenha mandado como parametro user ou password
                               Password p1 = Password(
-                                  id: acount != null? acount!.id: null,
+                                  id: acount != null ? acount!.id : null,
                                   place: place.text.trim(),
                                   url: url.text.trim(),
                                   login: login.text.trim(),
                                   password: password.text.trim(),
-                                  fk_user: acount != null ?acount!.fk_user:user!.id);
-                              print('	linha 110-------arquivo: password_page------- valor:$p1	');
-                              acount != null ? db.update(p1): db.insert(p1);
+                                  fk_user: acount != null
+                                      ? acount!.fk_user
+                                      : user!.id);
+                              print(
+                                  '	linha 110-------arquivo: password_page------- valor:$p1	');
+                              acount != null ? db.update(p1) : db.insert(p1);
                               Navigator.pop(context);
                             }
                           },

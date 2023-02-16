@@ -87,6 +87,12 @@ class DbHelper {
     return await dbTodo.delete(table2, where: 'fk_user = ?', whereArgs: [id]);
   }
 
+  Future<int> deleteOnePassword(int id) async {
+    // o delete retorna um numero inteiro
+    Database dbTodo = await db;
+    return await dbTodo.delete(table2, where: 'id = ?', whereArgs: [id]);
+  }
+
   Future<int> update(dynamic bank) async {
     Database dbTodo = await db;
     return await dbTodo
@@ -180,4 +186,36 @@ class DbHelper {
     password.id = await dbTodo.insert(table, password.toMap());
     return password;
   }
+
+
+insertPasswordBulk(List<Password> password) async {
+  final dbPassword = await db;
+  var buffer = new StringBuffer();
+  password.forEach((c) {
+    print('\n---------------------------------------------------');
+    print('\n$c\n');
+    print('---------------------------------------\n');
+    if (buffer.isNotEmpty) {
+      buffer.write(",\n");
+    }
+    buffer.write("('");
+    buffer.write(c.place);
+    buffer.write("', '");
+    buffer.write(c.url);
+    buffer.write("', '");
+    buffer.write(c.login);
+    buffer.write("', '");
+    buffer.write(c.password);
+    buffer.write("', '");
+    buffer.write(c.fk_user);
+    buffer.write("')");
+    print(buffer);
+  });
+  var raw = await dbPassword
+      .rawInsert("INSERT Into $table2 (place,url,login,password,fk_user)"
+          " VALUES ${buffer.toString()}");
+  return raw;
+}
+
+
 }
