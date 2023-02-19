@@ -13,6 +13,7 @@ class DbHelper {
   factory DbHelper() => _instance; // não precisa entender
   DbHelper.internal(); // não precisa entender
   Database? _db;
+
   Future<Database> get db async {
     if (_db != null) {
       // verifica se o banco existe
@@ -187,35 +188,32 @@ class DbHelper {
     return password;
   }
 
-
-insertPasswordBulk(List<Password> password) async {
-  final dbPassword = await db;
-  var buffer = new StringBuffer();
-  password.forEach((c) {
-    print('\n---------------------------------------------------');
-    print('\n$c\n');
-    print('---------------------------------------\n');
-    if (buffer.isNotEmpty) {
-      buffer.write(",\n");
-    }
-    buffer.write("('");
-    buffer.write(c.place);
-    buffer.write("', '");
-    buffer.write(c.url);
-    buffer.write("', '");
-    buffer.write(c.login);
-    buffer.write("', '");
-    buffer.write(c.password);
-    buffer.write("', '");
-    buffer.write(c.fk_user);
-    buffer.write("')");
-    print(buffer);
-  });
-  var raw = await dbPassword
-      .rawInsert("INSERT Into $table2 (place,url,login,password,fk_user)"
-          " VALUES ${buffer.toString()}");
-  return raw;
-}
-
-
+  insertPasswordBulk(List<Password> password) async {
+    final dbPassword = await db;
+    var buffer = new StringBuffer();
+    password.forEach((c) {
+      print('\n---------------------------------------------------');
+      print('\n$c\n');
+      print('---------------------------------------\n');
+      if (buffer.isNotEmpty) {
+        buffer.write(",\n");
+      }
+      buffer.write("('");
+      buffer.write(c.place);
+      buffer.write("', '");
+      buffer.write(c.url);
+      buffer.write("', '");
+      buffer.write(c.login);
+      buffer.write("', '");
+      buffer.write(c.password);
+      buffer.write("', '");
+      buffer.write(c.fk_user);
+      buffer.write("')");
+      print(buffer);
+    });
+    var raw = await dbPassword
+        .rawInsert("INSERT Into $table2 (place,url,login,password,fk_user)"
+            " VALUES ${buffer.toString()}");
+    return raw;
+  }
 }

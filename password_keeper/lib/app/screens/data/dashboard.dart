@@ -4,18 +4,20 @@ import 'package:password_keeper/app/screens/auth/login.dart';
 import 'package:password_keeper/app/screens/data/password_page.dart';
 import 'package:password_keeper/app/screens/widget/item.dart';
 import 'package:password_keeper/utils/DB.dart';
+import 'package:password_keeper/utils/confirmation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../model/user.dart';
 
 class DashBoard extends StatefulWidget {
-  DashBoard({super.key, this.user});
+  const DashBoard({super.key, this.user});
   final User? user;
 
   @override
   State<DashBoard> createState() => _DashBoard();
 }
 
-class _DashBoard extends State<DashBoard> {
+class _DashBoard extends State<DashBoard>{
   TextEditingController search = TextEditingController();
   DbHelper db = DbHelper();
   List<Password> list_password = [];
@@ -23,8 +25,15 @@ class _DashBoard extends State<DashBoard> {
   int flex_search = 4;
   FocusNode focus = FocusNode();
   Password? deleted;
+  
+  String place = 'teste';
+  String url =
+      'https://www.tutorialspoint.com/dart_programming/dart_programming_for_loop.html';
+  String login = 'pessoa';
+  String senha = '12345';
+  int i = 0;
 
-  Future<Null> refresh() async {
+  Future<void> refresh() async {
     await Future.delayed(Duration(seconds: 1));
     setState(() {
       widget.createState();
@@ -44,49 +53,36 @@ class _DashBoard extends State<DashBoard> {
     });
   }
 
-  // Future<Null> dummy() async{
-  //   String place = 'submarino';
-  //   String url =
-  //       'https://www.tutorialspoint.com/dart_programming/dart_programming_for_loop.htm';
-  //   String login = 'pessoa';
-  //   String senha = '12345';
-  //   Password px = Password();
-  //   int aux = 1;
-  //   List <Password> lista = [];
-  //   for (int i = 1; i <= 15; i++) {
-  //     px.place = i.toString();
-  //     px.url = '$url + $i';
-  //     px.login = '$login + $i';
-  //     px.password = '$senha + $i';
-  //     px.fk_user = 2;
-  //     print(px);
-  //     lista.add(px);
-  //   }
-  //   //BOOK Colocadno duymmy date
-  //   //como o for não funcina muito bme com async.
-  //   //se tentasse colocar todo os numeros o I sairia 15, pois esperaria terminar toda o loop, para salvar o itens
-  //   //conseguentemete os itens ficaramria como o mesmo i = 15 
-  //   // lista.forEach((item)async{ //jeito normal de var
-  //   //   //await Future.forEach(lista,(item) async{// jeito com future
-  
-  //   //   print(item.place);
-  //   //   await  db.insert(px);
-  //   // });
-  //   db.insertPasswordBulk(lista);
-  //   setState(() {});
-  // }
+  // teste 2
+  dummy() async {
+    Password px = Password();
+    int aux = 1;
+    List<Password> lista = [];
 
+    px.place = '$i$place';
+    px.url = '$url + $i';
+    px.login = '$login + $i';
+    px.password = '$senha + $i';
+    px.fk_user = 1;
+    i += 1;
 
-    
+    await db.insert(px).then((value) {
+      print('	linha 66-------arquivo: px------- valor:$px	');
 
-  void initState() {
-    super.initState();
-    focus.addListener(() {
-      if (!focus.hasFocus) {
-        print('teste --------------teste');
-      }
+      setState(() {});
     });
   }
+
+  deleteAllPassword() {
+    db.deletepassword(widget.user!.id!).then((value) {
+      Navigator.pop(context);
+      setState(() {
+        widget.createState();
+      });
+    });
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -145,14 +141,23 @@ class _DashBoard extends State<DashBoard> {
                     ),
                     title: Text("apagar usuario"),
                     onTap: () {
-                      db.deletepassword(widget.user!.id!).then((value) {
-                        db.delete(widget.user!.id!).then((value) {
-                          //refresh();
-                          Navigator.pop(context);
-                          Navigator.push(context,
-                              MaterialPageRoute(builder: (context) => Login()));
-                        });
-                      });
+                      Confirmation(
+                        context: context,
+                        user:widget.user,
+                        text: 'tem certeza que quer apagar todo o Usuario:${widget.user!.login!}\n\n ao clicar em corfirmar todos os dados serão perdidos',
+                        fun: () {
+                          db.deletepassword(widget.user!.id!).then((value) {
+                            db.delete(widget.user!.id!).then((value) {
+                              //refresh();
+
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => Login()));
+                            });
+                          });
+                        },
+                      );
                       //Navegar para outra página
                     },
                   ),
@@ -163,17 +168,38 @@ class _DashBoard extends State<DashBoard> {
                     ),
                     title: Text("apagar senhas"),
                     onTap: () {
-                      db.deletepassword(widget.user!.id!).then((value) {
-                        Navigator.pop(context);
-                        setState(() {
-                          widget.createState();
-                        });
-                      });
+                      Confirmation(
+                          //BOOK recriar, parte para mandar função assincrona
+                          context: context,
+                          user: widget.user,
+                          text: 'Tem certeza que quer apagar todos as senhas? \n\n ao clicar em corfirmar todos as contas serão apagados',
+                          fun: () {
+                          
+                            db.deletepassword(widget.user!.id!).then((value) {
+                              setState(() {
+                                widget.createState();
+                              });
+                            });
+                          });
                       //Navegar para outra página
                     },
                   ),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      Icons.add,
+                      color: Color.fromARGB(255, 224, 58, 63),
+                    ),
+                    title: Text("add 1 dummy account"),
+                    onTap: () {
+                      dummy();
+                    },
+                  )
                 ],
               ),
+            
               ListTile(
                 leading: Icon(
                   Icons.logout,
@@ -189,16 +215,6 @@ class _DashBoard extends State<DashBoard> {
                   //Navegar para outra página
                 },
               ),
-              // ListTile(
-              //   leading: Icon(
-              //     Icons.add,
-              //     color: Color.fromARGB(255, 224, 58, 63),
-              //   ),
-              //   title: Text("add 50 passwords"),
-              //   onTap: () {
-              //     dummy();
-              //   },
-              // )
             ],
           ),
         ),
@@ -234,12 +250,17 @@ class _DashBoard extends State<DashBoard> {
                 // },
                 child: TextField(
                   controller: search,
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 224, 58, 63),
+                  ),
                   onChanged: (value) {
                     searchingDB(); //altera o estado cada vez que digita algo.
                   },
                   decoration: const InputDecoration(
                       //label: Text('local'),
                       hintText: "facebook..",
+                      hintStyle: TextStyle(
+                          color: Colors.red, fontStyle: FontStyle.italic),
                       suffixIcon: Icon(Icons.search)),
                 ),
               ),
@@ -285,13 +306,15 @@ class _DashBoard extends State<DashBoard> {
                               width: double.infinity,
                               height: 200,
                               alignment: Alignment.center,
-                              child: searching ?const Text( 
-                                'Nem um Registo encontrado!',
-                                style: TextStyle(fontSize: 22),
-                              ):const Text( 
-                                'Sem registros no Banco',
-                                style: TextStyle(fontSize: 22),
-                              ),
+                              child: searching
+                                  ? const Text(
+                                      'Nem um Registo encontrado!',
+                                      style: TextStyle(fontSize: 22),
+                                    )
+                                  : const Text(
+                                      'Sem registros no Banco',
+                                      style: TextStyle(fontSize: 22),
+                                    ),
                             ),
                           );
                         } else {

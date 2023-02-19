@@ -5,6 +5,7 @@ class Password {
   String? url;
   String? login;
   String? password;
+  // ignore: non_constant_identifier_names
   int? fk_user;
 
   Password.fromMap(Map map) {

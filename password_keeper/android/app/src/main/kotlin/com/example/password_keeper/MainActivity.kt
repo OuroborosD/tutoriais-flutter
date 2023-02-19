@@ -1,4 +1,4 @@
-package com.example.password_keeper
+package com.oroboros.password_keeper
 
 import io.flutter.embedding.android.FlutterActivity
 

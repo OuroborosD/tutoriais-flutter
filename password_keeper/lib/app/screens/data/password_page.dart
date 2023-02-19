@@ -137,11 +137,11 @@ class PasswordPage extends StatelessWidget {
                             width: double.infinity,
                             child: Align(
                               alignment: Alignment.center,
-                              child: Text(
-                                'Login',
+                              child: Text(user == null?
+                                'Salvar Modificação':'Salvar Dados',
                                 style: TextStyle(
                                     color: Color.fromARGB(255, 224, 58, 63),
-                                    fontSize: 18,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.bold),
                               ),
                             ),

@@ -94,7 +94,22 @@ class _CustomInputState extends State<CustomInput> {
                           )),
                     ],
                   )
-            : null,
+            :widget.is_password!
+                ? Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            obscure_text = !obscure_text;
+                          });
+                        },
+                        icon: Icon(!obscure_text
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                        color: Color.fromARGB(255, 224, 58, 63),
+                      ),]):null
+            ,
         label: Text(widget.label_text!,
             style: const TextStyle(
               color: Color.fromARGB(255, 224, 58, 63),
