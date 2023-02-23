@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 import 'package:password_keeper/app/model/password.dart';
 import 'package:password_keeper/app/screens/auth/login.dart';
 import 'package:password_keeper/app/screens/data/password_page.dart';
 import 'package:password_keeper/app/screens/widget/item.dart';
 import 'package:password_keeper/utils/DB.dart';
-import 'package:password_keeper/utils/confirmation.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:password_keeper/app/screens/widget/confirmation.dart';
 import '../../model/user.dart';
 
 class DashBoard extends StatefulWidget {
@@ -17,7 +20,7 @@ class DashBoard extends StatefulWidget {
   State<DashBoard> createState() => _DashBoard();
 }
 
-class _DashBoard extends State<DashBoard>{
+class _DashBoard extends State<DashBoard> {
   TextEditingController search = TextEditingController();
   DbHelper db = DbHelper();
   List<Password> list_password = [];
@@ -25,7 +28,7 @@ class _DashBoard extends State<DashBoard>{
   int flex_search = 4;
   FocusNode focus = FocusNode();
   Password? deleted;
-  
+
   String place = 'teste';
   String url =
       'https://www.tutorialspoint.com/dart_programming/dart_programming_for_loop.html';
@@ -59,8 +62,8 @@ class _DashBoard extends State<DashBoard>{
     int aux = 1;
     List<Password> lista = [];
 
-    px.place = '$i$place';
-    px.url = '$url + $i';
+    px.place = '$place';
+    px.url = '$url';
     px.login = '$login + $i';
     px.password = '$senha + $i';
     px.fk_user = 1;
@@ -82,7 +85,14 @@ class _DashBoard extends State<DashBoard>{
     });
   }
 
-
+  Future<void> _launchInBrowser(Uri url) async {
+    if (!await launchUrl(
+      url,
+      mode: LaunchMode.externalApplication,
+    )) {
+      throw Exception('Could not launch $url');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +139,8 @@ class _DashBoard extends State<DashBoard>{
                         '${widget.user!.login![0]}${widget.user!.login![1]}',
                         style: TextStyle(
                           fontSize: 24,
-                          color: Color.fromARGB(255, 224, 58, 63),
+                          color: Color.fromARGB(255,122, 93, 81),
+                          fontWeight: FontWeight.bold
                         ),
                       ),
                     ),
@@ -139,12 +150,13 @@ class _DashBoard extends State<DashBoard>{
                       Icons.person_remove,
                       color: Color.fromARGB(255, 224, 58, 63),
                     ),
-                    title: Text("apagar usuario"),
+                    title: Text("Apagar Usuario",style: TextStyle(color: Color.fromARGB(255,122, 93, 81),),),
                     onTap: () {
                       Confirmation(
                         context: context,
-                        user:widget.user,
-                        text: 'tem certeza que quer apagar todo o Usuario:${widget.user!.login!}\n\n ao clicar em corfirmar todos os dados serão perdidos',
+                        user: widget.user,
+                        text:
+                            'tem certeza que quer apagar todo o Usuario:${widget.user!.login!}\n\n ao clicar em corfirmar todos os dados serão perdidos',
                         fun: () {
                           db.deletepassword(widget.user!.id!).then((value) {
                             db.delete(widget.user!.id!).then((value) {
@@ -172,9 +184,9 @@ class _DashBoard extends State<DashBoard>{
                           //BOOK recriar, parte para mandar função assincrona
                           context: context,
                           user: widget.user,
-                          text: 'Tem certeza que quer apagar todos as senhas? \n\n ao clicar em corfirmar todos as contas serão apagados',
+                          text:
+                              'Tem certeza que quer apagar todos as senhas? \n\n ao clicar em corfirmar todos as contas serão apagados',
                           fun: () {
-                          
                             db.deletepassword(widget.user!.id!).then((value) {
                               setState(() {
                                 widget.createState();
@@ -199,7 +211,6 @@ class _DashBoard extends State<DashBoard>{
                   )
                 ],
               ),
-            
               ListTile(
                 leading: Icon(
                   Icons.logout,
@@ -227,43 +238,74 @@ class _DashBoard extends State<DashBoard>{
                 height: 8,
               ),
               //BOOK se não colocar o expanded, vai ficar com tamanho fixo, mesmo quando abre o keyboad. é isso que você quer
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                color: Colors.white,
-                //BOOK como verificar se algo tem focado de forma simples
-                // child: Focus(
-                // onFocusChange: (focus) {
-                //   if (focus) {
-                //     setState(() {
-                //       flex_search = 3;
-                //       print(
-                //           '	linha 165-------arquivo: ------- valor:$flex_search	');
-                //     });
-                //   } if(!focus) {
-                //     setState(() {
-                //       flex_search = 2;
-
-                //       print(
-                //           '	linha 175-------arquivo: ------- valor:$flex_search	');
-                //     });
-                //   }
-                // },
-                child: TextField(
-                  controller: search,
-                  style: TextStyle(
+              Stack(children: [
+                //BOOK layout usando o stack, coloca um campo maior no começo, para dar cor
+                Container(
+                    height: 100.0,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Color.fromARGB(255,122, 93, 81),
+                      
+                    )),
+                Container(
+                  height: 100.0,
+                  width: 100.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
                     color: Color.fromARGB(255, 224, 58, 63),
                   ),
-                  onChanged: (value) {
-                    searchingDB(); //altera o estado cada vez que digita algo.
-                  },
-                  decoration: const InputDecoration(
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  //color: Colors.white,
+                  //BOOK como verificar se algo tem focado de forma simples
+                  // child: Focus(
+                  // onFocusChange: (focus) {
+                  //   if (focus) {
+                  //     setState(() {
+                  //       flex_search = 3;
+                  //       print(
+                  //           '	linha 165-------arquivo: ------- valor:$flex_search	');
+                  //     });
+                  //   } if(!focus) {
+                  //     setState(() {
+                  //       flex_search = 2;
+
+                  //       print(
+                  //           '	linha 175-------arquivo: ------- valor:$flex_search	');
+                  //     });
+                  //   }
+                  // },
+                  child: TextField(
+                    controller: search,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    onChanged: (value) {
+                      searchingDB(); //altera o estado cada vez que digita algo.
+                    },
+                    decoration: const InputDecoration(
                       //label: Text('local'),
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.white)),
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Colors.white,
+                              width: 3)),
+                      
                       hintText: "facebook..",
                       hintStyle: TextStyle(
-                          color: Colors.red, fontStyle: FontStyle.italic),
-                      suffixIcon: Icon(Icons.search)),
+                          color: Colors.white, fontStyle: FontStyle.italic),
+                      suffixIcon: Icon(
+                        Icons.search,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+              ]),
               const SizedBox(
                 height: 12,
               ),
@@ -309,11 +351,11 @@ class _DashBoard extends State<DashBoard>{
                               child: searching
                                   ? const Text(
                                       'Nem um Registo encontrado!',
-                                      style: TextStyle(fontSize: 22),
+                                      style: TextStyle(fontSize: 22, color: Color.fromARGB(255,122, 93, 81),),
                                     )
                                   : const Text(
                                       'Sem registros no Banco',
-                                      style: TextStyle(fontSize: 22),
+                                      style: TextStyle(fontSize: 22, color: Color.fromARGB(255,122, 93, 81),),
                                     ),
                             ),
                           );
@@ -379,6 +421,17 @@ class _DashBoard extends State<DashBoard>{
                                               widget.createState();
                                             })
                                           });
+                                    },
+                                    onDoubleTap: () async {
+                                      final url =
+                                          Uri.parse(list_password[index].url!);
+                                      _launchInBrowser(url);
+                                    },
+                                    onLongPress: () async {
+                                      await Share.share(
+                                          """${list_password[index].place}\n link:${list_password[index].url}\n login: ${list_password[index].login}\n senha: ${list_password[index].password}
+                                                          """,
+                                          subject: 'informações');
                                     },
                                   ),
                                 );

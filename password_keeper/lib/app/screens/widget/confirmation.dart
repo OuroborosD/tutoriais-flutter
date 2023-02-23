@@ -20,7 +20,7 @@ void Confirmation(
                   child: Text('Cancelar')),
               TextButton(
                   onPressed: () {
-                    //BOOK precisa ter o parenteses
+
                     fun!();
                     Navigator.pop(context);
                   },
